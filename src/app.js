@@ -2,6 +2,12 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
+import foodRoutes from "./routes/food.routes.js";
+import tableRoutes from "./routes/table.routes.js";
+import orderRoutes from "./routes/order.routes.js";
+import staffRoutes from "./routes/staff.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
+import settingsRoutes from "./routes/settings.routes.js";
 
 const app = express();
 
@@ -10,5 +16,11 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/foods", foodRoutes);
+app.use("/api/tables", tableRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/staffs", staffRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/settings", settingsRoutes);
 
 export default app;
