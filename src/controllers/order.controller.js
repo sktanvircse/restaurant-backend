@@ -17,10 +17,11 @@ export const getOrders = (req, res) => {
 // Create order
 export const createOrder = (req, res) => {
   const { table_id, total_price } = req.body;
+   const adminId = req.admin.id;
   if (!table_id) return res.status(400).json({ message: "Table ID is required" });
 
-  const sql = "INSERT INTO orders (table_id, total_price) VALUES (?, ?)";
-  db.query(sql, [table_id, total_price || 0], (err, result) => {
+  const sql = "INSERT INTO orders (table_id, total_price, admin_id) VALUES (?, ?)";
+  db.query(sql, [table_id, total_price || 0, adminId], (err, result) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json({ message: "Order created", id: result.insertId });
   });
@@ -30,12 +31,19 @@ export const createOrder = (req, res) => {
 export const updateOrderStatus = (req, res) => {
   const { id } = req.params;
   const { order_status } = req.body;
+  const adminId = req.admin.id;
 
   const sql = "UPDATE orders SET order_status=? WHERE id=?";
   db.query(sql, [order_status, id], (err) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json({ message: "Order status updated" });
   });
+
+ db.execute(
+    "INSERT INTO order_logs (order_id, admin_id, action) VALUES (?, ?, ?)",
+    [id, adminId, `status_${order_status}`]
+  );
+
 };
 
 // Delete order
