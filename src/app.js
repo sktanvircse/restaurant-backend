@@ -8,6 +8,8 @@ import orderRoutes from "./routes/order.routes.js";
 import staffRoutes from "./routes/staff.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
+import reportRoutes from "./routes/report.routes.js";
 
 const app = express();
 
@@ -22,5 +24,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/staffs", staffRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/reports", reportRoutes);
 
 export default app;
