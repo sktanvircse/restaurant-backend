@@ -3,13 +3,16 @@ import {
   ordersByDay,
   revenueByDay,
   adminPerformance,
-} from "../controllers/reportController.js";
-import { protect } from "../middlewares/authMiddleware.js";
+} from "../controllers/report.controller.js";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/orders-by-day", protect, ordersByDay);
-router.get("/revenue-by-day", protect, revenueByDay);
-router.get("/admin-performance", protect, adminPerformance);
+// All routes protected
+router.use(protect);
+
+router.get("/orders-by-day", ordersByDay);
+router.get("/revenue-by-day", revenueByDay);
+router.get("/admin-performance", adminPerformance);
 
 export default router;

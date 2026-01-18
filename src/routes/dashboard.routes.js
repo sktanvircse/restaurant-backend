@@ -1,9 +1,12 @@
 import express from "express";
-import { dashboardSummary } from "../controllers/dashboardController.js";
-import { protect } from "../middlewares/authMiddleware.js";
+import { dashboardSummary } from "../controllers/dashboard.controller.js";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/summary", protect, dashboardSummary);
+// All routes protected
+router.use(protect);
+
+router.get("/summary", dashboardSummary);
 
 export default router;

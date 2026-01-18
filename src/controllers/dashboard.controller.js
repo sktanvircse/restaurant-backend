@@ -1,11 +1,7 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 
 export const dashboardSummary = async (req, res) => {
   try {
-    /* =====================
-       SUMMARY COUNTS
-    ====================== */
-
     const [[orders]] = await db.query(
       "SELECT COUNT(*) AS totalOrders FROM orders"
     );
@@ -46,10 +42,6 @@ export const dashboardSummary = async (req, res) => {
       "SELECT COUNT(*) AS occupiedTables FROM restaurant_tables WHERE status='occupied'"
     );
 
-    /* =====================
-       CHART DATA
-    ====================== */
-
     const [ordersByDay] = await db.query(`
       SELECT 
         DATE(order_time) AS date,
@@ -67,10 +59,6 @@ export const dashboardSummary = async (req, res) => {
       GROUP BY DATE(payment_time)
       ORDER BY date
     `);
-
-    /* =====================
-       RESPONSE
-    ====================== */
 
     res.json({
       summary: {

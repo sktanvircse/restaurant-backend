@@ -1,8 +1,5 @@
-import db from "../config/db.js";
+import { db } from "../config/db.js";
 
-/**
- * ORDERS BY DAY (for chart)
- */
 export const ordersByDay = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -18,9 +15,7 @@ export const ordersByDay = async (req, res) => {
   }
 };
 
-/**
- * REVENUE BY DAY (for chart)
- */
+
 export const revenueByDay = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -36,9 +31,6 @@ export const revenueByDay = async (req, res) => {
   }
 };
 
-/**
- * ADMIN PERFORMANCE REPORT
- */
 export const adminPerformance = async (req, res) => {
   try {
     const [rows] = await db.query(`
