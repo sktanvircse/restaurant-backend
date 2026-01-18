@@ -10,6 +10,7 @@ import paymentRoutes from "./routes/payment.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import reportRoutes from "./routes/report.routes.js";
+import roleRoutes from "./routes/role.routes.js";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/reports", reportRoutes);
+app.use("/api/roles", roleRoutes);
 
 export default app;
