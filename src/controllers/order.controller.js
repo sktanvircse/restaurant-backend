@@ -20,7 +20,7 @@ export const createOrder = (req, res) => {
    const adminId = req.admin.id;
   if (!table_id) return res.status(400).json({ message: "Table ID is required" });
 
-  const sql = "INSERT INTO orders (table_id, total_price, admin_id) VALUES (?, ?)";
+  const sql = "INSERT INTO orders (table_id, total_price, admin_id) VALUES (?, ?, ?)";
   db.query(sql, [table_id, total_price || 0, adminId], (err, result) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json({ message: "Order created", id: result.insertId });

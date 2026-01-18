@@ -19,7 +19,7 @@ export const createPayment = (req, res) => {
    const adminId = req.admin.id;
   if (!order_id || !amount) return res.status(400).json({ message: "Order ID and amount required" });
 
-  const sql = "INSERT INTO payments (order_id, amount, method, admin_id) VALUES (?, ?, ?)";
+  const sql = "INSERT INTO payments (order_id, amount, method, admin_id) VALUES (?, ?, ?, ?)";
   db.query(sql, [order_id, amount, method || "cash", adminId], (err, result) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json({ message: "Payment added", id: result.insertId });
