@@ -1,44 +1,72 @@
 import { db } from "../config/db.js";
 
 // 1️⃣ Get all categories
-export const getCategories = (req, res) => {
-  const sql = "SELECT * FROM categories";
-  db.query(sql, (err, result) => {
-    if (err) return res.status(500).json({ message: err.message });
-    res.json(result);
-  });
+export const getCategories = async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM categories");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // 2️⃣ Create category
-export const createCategory = (req, res) => {
+export const createCategory = async (req, res) => {
   const { name } = req.body;
   if (!name) return res.status(400).json({ message: "Name is required" });
 
-  const sql = "INSERT INTO categories (name) VALUES (?)";
-  db.query(sql, [name], (err, result) => {
-    if (err) return res.status(500).json({ message: err.message });
+  try {
+    const [result] = await db.query(
+      "INSERT INTO categories (name) VALUES (?)",
+      [name],
+    );
     res.json({ message: "Category created", id: result.insertId });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // 3️⃣ Update category
-export const updateCategory = (req, res) => {
+export const updateCategory = async (req, res) => {
   const { id } = req.params;
   const { name, status } = req.body;
 
-  const sql = "UPDATE categories SET name = ?, status = ? WHERE id = ?";
-  db.query(sql, [name, status, id], (err, result) => {
-    if (err) return res.status(500).json({ message: err.message });
+  try {
+    await db.query("UPDATE categories SET name = ?, status = ? WHERE id = ?", [
+      name,
+      status,
+      id,
+    ]);
     res.json({ message: "Category updated" });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // 4️⃣ Delete category
-export const deleteCategory = (req, res) => {
+export const deleteCategory = async (req, res) => {
   const { id } = req.params;
-  const sql = "DELETE FROM categories WHERE id = ?";
-  db.query(sql, [id], (err) => {
-    if (err) return res.status(500).json({ message: err.message });
+
+  try {
+    await db.query("DELETE FROM categories WHERE id = ?", [id]);
     res.json({ message: "Category deleted" });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// 5️⃣ Get single category
+export const getCategoryById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query("SELECT * FROM categories WHERE id = ?", [
+      id,
+    ]);
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Category not found" });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
