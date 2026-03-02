@@ -60,3 +60,7 @@ export const loginAdmin = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const logoutAdmin = (req, res) => {
+  res.json({ message: "Logged out successfully" });
+};
