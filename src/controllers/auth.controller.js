@@ -36,11 +36,11 @@ export const loginAdmin = async (req, res) => {
     }
 
     const admin = rows[0];
-    // const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await bcrypt.compare(password, admin.password);
 
-    // if (!isMatch) {
-    //   return res.status(401).json({ message: "Invalid credentials password" });
-    // }
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials password" });
+    }
 
     const token = jwt.sign(
       { id: admin.id, email: admin.email },
