@@ -1,5 +1,9 @@
 import express from "express";
-import { loginAdmin, registerAdmin } from "../controllers/auth.controller.js";
+import {
+  loginAdmin,
+  registerAdmin,
+  logoutAdmin,
+} from "../controllers/auth.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -11,5 +15,7 @@ router.post("/login", loginAdmin);
 router.get("/me", protect, (req, res) => {
   res.json({ admin: req.admin });
 });
+
+router.post("/logout", logoutAdmin);
 
 export default router;

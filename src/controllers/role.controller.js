@@ -1,44 +1,69 @@
 import { db } from "../config/db.js";
 
 // Get all roles
-export const getRoles = (req, res) => {
-  const sql = "SELECT * FROM roles";
-  db.query(sql, (err, result) => {
-    if (err) return res.status(500).json({ message: err.message });
-    res.json(result);
-  });
+export const getRoles = async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM roles");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // Create role
-export const createRole = (req, res) => {
+export const createRole = async (req, res) => {
   const { name, description, status } = req.body;
   if (!name) return res.status(400).json({ message: "Name required" });
 
-  const sql = "INSERT INTO roles (name, description, status) VALUES (?, ?, ?)";
-  db.query(sql, [name, description || "", status !== undefined ? status : true], (err, result) => {
-    if (err) return res.status(500).json({ message: err.message });
+  try {
+    const [result] = await db.query(
+      "INSERT INTO roles (name, description, status) VALUES (?, ?, ?)",
+      [name, description || "", status !== undefined ? status : true],
+    );
     res.json({ message: "Role added", id: result.insertId });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // Update role
-export const updateRole = (req, res) => {
+export const updateRole = async (req, res) => {
   const { id } = req.params;
   const { name, description, status } = req.body;
 
-  const sql = "UPDATE roles SET name=?, description=?, status=? WHERE id=?";
-  db.query(sql, [name, description, status, id], (err) => {
-    if (err) return res.status(500).json({ message: err.message });
+  try {
+    await db.query(
+      "UPDATE roles SET name=?, description=?, status=? WHERE id=?",
+      [name, description, status, id],
+    );
     res.json({ message: "Role updated" });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 // Delete role
-export const deleteRole = (req, res) => {
+export const deleteRole = async (req, res) => {
   const { id } = req.params;
-  const sql = "DELETE FROM roles WHERE id=?";
-  db.query(sql, [id], (err) => {
-    if (err) return res.status(500).json({ message: err.message });
+
+  try {
+    await db.query("DELETE FROM roles WHERE id=?", [id]);
     res.json({ message: "Role deleted" });
-  });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get single role
+export const getRoleById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query("SELECT * FROM roles WHERE id = ?", [id]);
+    if (rows.length === 0)
+      return res.status(404).json({ message: "Role not found" });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

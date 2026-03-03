@@ -3,7 +3,8 @@ import {
   getCategories,
   createCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  getCategoryById,
 } from "../controllers/category.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 
@@ -13,6 +14,7 @@ const router = express.Router();
 router.use(protect);
 
 router.get("/", getCategories);
+router.get("/:id", getCategoryById);
 router.post("/", createCategory);
 router.put("/:id", updateCategory);
 router.delete("/:id", deleteCategory);
