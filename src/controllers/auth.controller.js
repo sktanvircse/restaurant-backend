@@ -32,14 +32,14 @@ export const loginAdmin = async (req, res) => {
     ]);
 
     if (rows.length === 0) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials email" });
     }
 
     const admin = rows[0];
     const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials password" });
     }
 
     const token = jwt.sign(
